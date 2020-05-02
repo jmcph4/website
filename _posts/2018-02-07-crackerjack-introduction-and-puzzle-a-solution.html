@@ -1,0 +1,159 @@
+---
+date: 2018-02-07
+title: Crackerjack - Introduction and Puzzle A Solution
+layout: post
+excerpt: As part of my journey into reverse engineering, I decided to create my own set of crackmes called Crackerjack. I will be doing a series of articles detailing solutions to each puzzle
+started: 2018-02-07 17:19:00
+tags: [binary analysis,malware analysis,binary exploitation,disassembly,machine code,crackme,cybersecurity]
+---
+<section id="s1">
+<h2>Introduction</h2>
+<p>As part of my journey into reverse engineering, I decided to create my own set of <a href="https://en.wikipedia.org/wiki/Crackme" target="_blank" title="Crackme - Wikipedia">"crackmes"</a> called <a href="https://github.com/jmcph4/crackerjack" target="_blank" title="GitHub - jmcph4/crackerjack: A collection of crackmes">Crackerjack</a>. I will be doing a series of articles detailing solutions to each puzzle, predominantly using radare2 and Unix utilities.</p>
+
+<p>While Crackerjack is still a work in progress, each puzzle is standalone. Thus, once one is committed, it means it is ready to be solved. Each puzzle in Crackerjack accepts some arbitrary input on <code>stdin</code>, compares it against the passphrase for that puzzle, and outputs either <kbd>PASS</kbd> or <kbd>FAIL</kbd>. The aim of the game is to determine each passphrase (yes, I know them all, and you can too if you study the source code). In this post, I will walkthrough the solution of the first puzzle, Puzzle A. Be warned, it is <i>very</i> easy (at least when it comes to crackmes).</p>
+
+<p>To acquire the binaries, get a local copy of the Git repository, compile, and strip the binaries:</p>
+
+<pre>
+$ git clone https://github.com/jmcph4/crackerjack.git
+$ cd crackerjack
+$ make
+$ strip bin/*
+</pre>
+</section>
+
+<section id="s2">
+<h2>Puzzle A</h2>
+<p>The first puzzle is in <code>bin/a</code>. When I first start reverse engineering a program, I like to use it myself for a bit in order to get some intuition as to how the program works. Try running the puzzle binary and trying some different passphrases (who knows, you might get lucky).</p>
+
+As mentioned above, due to this puzzle being the first in the collection it is not meant to be difficult (and is quite the opposite). With this in mind, we can expect to be exploiting some rather low-hanging fruit. Open the puzzle binary in radare2 and use the <kbd>iz</kbd> command to display a list of all ASCII strings radare2 could find in the binary:</p>
+
+<pre>
+$ r2 bin/a
+[0x00000630]> iz
+vaddr=0x00000847 paddr=0x00000847 ordinal=000 sz=7 len=6 section=.rodata type=ascii string=trance
+vaddr=0x0000084e paddr=0x0000084e ordinal=001 sz=5 len=4 section=.rodata type=ascii string=PASS
+vaddr=0x00000853 paddr=0x00000853 ordinal=002 sz=5 len=4 section=.rodata type=ascii string=FAIL
+</pre>
+
+<p>Of course, your output will differ slightly from mine (e.g. the PID used, etc.); however, the key aspects remain the same. Our listing contains three different strings:</p>
+
+<p>
+<ol>
+    <li><kbd>trance</kbd></li>
+    <li><kbd>PASS</kbd></li>
+    <li><kbd>FAIL</kbd></li>
+</ol>
+</p>
+
+<p>Well, we know that every puzzle in Crackerjack outputs either <kbd>PASS</kbd> or <kbd>FAIL</kbd> depending on our passphrase, so the last two strings are easily accounted for. The first string, <kbd>trance</kbd>, looks very out of place. If we attempt this as our passphrase:</p>
+
+<pre>
+$ ./bin/a
+trance
+PASS
+</pre>
+
+<p>Success! We have successfully solved the first puzzle binary, using <i>very</i> simple techniques.</p>
+
+<p>We used radare2 to display all of the ASCII strings contained within the puzzle binary and made an educated guess as to what the passphrase was. Note that we did not really need radare2 for this (but it did make it rather nice to digest). Unix has a nice utility called <code>strings</code>, which lists <i>printable</i> ASCII strings in <i>any arbitrary file</i>.</p>
+
+<pre>
+$ strings bin/a
+/lib64/ld-linux-x86-64.so.2
+libc.so.6
+__isoc99_scanf
+puts
+__cxa_finalize
+strcmp
+__libc_start_main
+_ITM_deregisterTMCloneTable
+__gmon_start__
+_Jv_RegisterClasses
+_ITM_registerTMCloneTable
+GLIBC_2.7
+GLIBC_2.2.5
+=I       
+=*       
+AWAVA
+AUATL
+[]A\A]A^A_
+trance
+PASS
+FAIL
+;*3$"
+GCC: (Debian 6.3.0-18) 6.3.0 20170516
+crtstuff.c
+__JCR_LIST__
+deregister_tm_clones
+__do_global_dtors_aux
+completed.6963
+__do_global_dtors_aux_fini_array_entry
+frame_dummy
+__frame_dummy_init_array_entry
+__FRAME_END__
+__JCR_END__
+__init_array_end
+_DYNAMIC
+__init_array_start
+__GNU_EH_FRAME_HDR
+_GLOBAL_OFFSET_TABLE_
+__libc_csu_fini
+_ITM_deregisterTMCloneTable
+puts@@GLIBC_2.2.5
+_edata
+__libc_start_main@@GLIBC_2.2.5
+__data_start
+strcmp@@GLIBC_2.2.5
+__gmon_start__
+__dso_handle
+_IO_stdin_used
+__libc_csu_init
+__bss_start
+main
+_Jv_RegisterClasses
+__isoc99_scanf@@GLIBC_2.7
+__TMC_END__
+_ITM_registerTMCloneTable
+__cxa_finalize@@GLIBC_2.2.5
+.symtab
+.strtab
+.shstrtab
+.interp
+.note.ABI-tag
+.note.gnu.build-id
+.gnu.hash
+.dynsym
+.dynstr
+.gnu.version
+.gnu.version_r
+.rela.dyn
+.rela.plt
+.init
+.plt.got
+.text
+.fini
+.rodata
+.eh_frame_hdr
+.eh_frame
+.init_array
+.fini_array
+.jcr
+.dynamic
+.got.plt
+.data
+.bss
+.comment
+</pre>
+
+<p>While this works, it is clearly much more tedious than the method we employed earlier. The beauty of radare2 is that it is smart enough to know which strings to display and which to omit.</p>
+
+<p>If we want an <i>even more</i> tedious method, opening the binary in a hex editor, or even just a plain text editor (or better yet, in <code>less</code>) and simply skim-reading for human-readable words would have worked (this is not for the weak-willed, though).</p>
+</section>
+
+<section id="s3">
+<h2>Conclusion</h2>
+<p>Crackerjack is a work in progess and I am adding new puzzles as I write and test them. I will publish a walkthrough for Puzzle B soon (Puzzle B poses more interesting challenges, but is not out of reach).</p>
+
+<p>On a more general note, if you are looking for some excellent communities for learning and discussing reverse engineering, consider <a href="https://reddit.com/r/ReverseEngineering" target="_blank" title="Reverse Engineering">/r/ReverseEngineering</a> or <a href="https://reddit.com/r/REGames" target="_blank" title="Reverse Engineering Games">/r/REGames</a> on Reddit, or the <a href="https://reverseengineering.stackexchange.com" target="_blank" title="Reverse Engineering Stack Exchange">Reverse Engineering Stack Exchange</a>.</p>
+</section>
