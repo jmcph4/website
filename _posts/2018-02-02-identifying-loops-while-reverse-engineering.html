@@ -1,0 +1,156 @@
+---
+date: 2018-02-02
+title: Identifying Loops While Reverse Engineering
+layout: post
+excerpt: Often when reverse engineering a binary, it's useful to have some patterns to help identify higher-level code constructs. This post goes through the general structure of various loops in a higher-level language (C) and their corresponding assembly format
+started: 2018-02-02 09:35:00
+tags: [binary analysis,binary exploitation,reverse engineering,disassembly,decompilation,machine code]
+---
+<section id="s1">
+<h2>Introduction</h2>
+<p>Often when reverse engineering a binary, it's useful to have some patterns to help identify higher-level code constructs. This post goes through the general structure of various loops in a higher-level language (C) and their corresponding assembly format.</p>
+</section>
+
+<section id="s2">
+<h2><code>for</code> Loops</h2>
+<p><code>for</code> loops are probably the most common loop in use today. As you're probably aware, <code>for</code> loops are normally used to generate a sequence or to iterate over some container. They look like this:</p>
+
+<pre>
+for(i=A;i&lt;B;i+=C)
+{
+    /* ... */
+}
+</pre>
+
+<p>Admittedly, <code>for</code> loops usually just increment their loop counter, but we can be even more general. The corresponding machine code for this code snippet would look something like this:</p>
+
+<pre>
+mov dword [rbp - 4], A
+jmp 5
+; ...
+add dword [rbp - 4], C
+cmp dword [rbp - 4], B-1
+jbe 1
+</pre>
+
+<p>For the snippet above, I've used line numbers for the jumps on lines 2 and 6, but in practice they would be the corresponding addresses in memory for these instructions.</p>
+
+<p>Let's look at a concrete example. Consider the following C program:</p>
+
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main(void)
+{
+    for(unsigned int i=0;i&lt;3;i++)
+    {
+        printf("%d", i);
+    }
+    
+    return EXIT_SUCCESS;
+}
+</pre>
+
+<p>I'm using my 64-bit Debian machine, so I've included my <code>uname</code> output for reference. I'm compiling using GCC and using <code>objdump</code> to get the disassembly of our executable.</p>
+
+<pre>
+$ uname --all
+Linux devlaptop 4.9.0-4-amd64 #1 SMP Debian 4.9.65-3+deb9u1 (2017-12-23) x86_64 GNU/Linux
+$ gcc for.c -Wall -Wextra -Wshadow -pedantic -std=c11 -o for
+$ objdump -d -Mintel for
+</pre>
+
+<p>Let's just look at the disassembly of <code>main</code> (I've included my own comments on relevant lines):</p>
+
+<pre>
+00000000000006b0 <main>:
+ 6b0:   55                      push   rbp
+ 6b1:   48 89 e5                mov    rbp,rsp
+ 6b4:   48 83 ec 10             sub    rsp,0x10
+ 6b8:   c7 45 fc 00 00 00 00    mov    DWORD PTR [rbp-0x4],0x0                                      ; initialise loop counter to zero
+ 6bf:   eb 1a                   jmp    6db &lt;main+0x2b&gt;                                        ; jump to loop condition check
+ 6c1:   8b 45 fc                mov    eax,DWORD PTR [rbp-0x4]
+ 6c4:   89 c6                   mov    esi,eax
+ 6c6:   48 8d 3d a7 00 00 00    lea    rdi,[rip+0xa7]        # 774 <_IO_stdin_used+0x4>
+ 6cd:   b8 00 00 00 00          mov    eax,0x0
+ 6d2:   e8 89 fe ff ff          call   560 <printf@plt>
+ 6d7:   83 45 fc 01             add    DWORD PTR [rbp-0x4],0x1                                      ; increment loop counter by 1
+ 6db:   83 7d fc 03             cmp    DWORD PTR [rbp-0x4],0x2                                      ; check if loop counter has reached 2 (terminating condition)
+ 6df:   76 e0                   jbe    6c1 &lt;main+0x11&gt;                                        ; jump based on the result of this comparison
+ 6e1:   b8 00 00 00 00          mov    eax,0x0
+ 6e6:   c9                      leave  
+ 6e7:   c3                      ret    
+ 6e8:   0f 1f 84 00 00 00 00    nop    DWORD PTR [rax+rax*1+0x0]
+ 6ef:   00
+</pre>
+
+<p>The first three instructions are the function prologue for <code>main</code>. The fourth instruction initialises our loop counter variable (<code>i</code>) to zero, and the fifth instruction performs a jump to our loop condition check (the 12<sup>th</sup> instruction). The code at 0x6c1-0x0x6d2 simply sets up the parameters to <code>printf</code> and calls it. At 0x6d7 our loop counter is incremented (in our case, by one). The next instruction after that checks whether our loop counter has reached 2 yet and the instruction after <i>that</i> jumps based off of the result of this comparison.</p>
+</section>
+
+<section id="s3">
+<h2><code>while</code> Loops</h2>
+
+<p>What about <code>while</code> loops? The analagous <code>while</code> loop version of our <code>for</code> loop template above looks like this:</p>
+
+<pre>
+i = A;
+while(i < B)
+{
+    /* ... */
+    i += C;
+}
+</pre>
+
+If we rewrite our toy program (in <code>for.c</code>) to use a <code>while</code> loop instead of a <code>for</code> loop and recompile, we can check the resultant machine code in the same way we did previously.
+
+<pre>
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+
+int main(void)
+{
+    unsigned int i = 0;
+    
+    while(i &lt; 3)
+    {
+        printf("%d", i);
+    }
+
+    return EXIT_SUCCESS;
+}
+</pre>
+
+<p>Our resulting disassembly is as follows:</p>
+
+<pre>
+00000000000006b0 &lt;main&gt;:
+ 6b0:   55                      push   rbp
+ 6b1:   48 89 e5                mov    rbp,rsp
+ 6b4:   48 83 ec 10             sub    rsp,0x10
+ 6b8:   c7 45 fc 00 00 00 00    mov    DWORD PTR [rbp-0x4],0x0
+ 6bf:   eb 1a                   jmp    6db &lt;main+0x2b&gt;
+ 6c1:   8b 45 fc                mov    eax,DWORD PTR [rbp-0x4]
+ 6c4:   89 c6                   mov    esi,eax
+ 6c6:   48 8d 3d a7 00 00 00    lea    rdi,[rip+0xa7]        # 774 &lt;_IO_stdin_used+0x4&gt;
+ 6cd:   b8 00 00 00 00          mov    eax,0x0
+ 6d2:   e8 89 fe ff ff          call   560 <printf@plt>
+ 6d7:   83 45 fc 01             add    DWORD PTR [rbp-0x4],0x1
+ 6db:   83 7d fc 03             cmp    DWORD PTR [rbp-0x4],0x3
+ 6df:   76 e0                   jbe    6c1 &lt;main+0x11&gt;
+ 6e1:   b8 00 00 00 00          mov    eax,0x0
+ 6e6:   c9                      leave  
+ 6e7:   c3                      ret    
+ 6e8:   0f 1f 84 00 00 00 00    nop    DWORD PTR [rax+rax*1+0x0]
+ 6ef:   00
+</pre>
+
+<p>Exactly the same! Even <code>diff</code> agrees.</p>
+</section>
+
+<section id="s4">
+<h2>Conclusion</h2>
+<p>Ultimately, both types of loops essentially boil down to jumping, comparing, and jumping based on the comparison (after all, that's what <i>looping</i> is). While these patterns aren't hard to spot by hand, tools such as radare2 provide helpful ASCII art arrows or other visual aids to show control flow in general, not just for loops. As I myself am still new to reverse engineering, I find it helpful to have such patterns in mind to help provide structure to what can seem like an endless pool of machine code.</p>
+
+<p>If this article was interesting to you and you'd like to apply these techniques to some more complicated binaries, check out <a href="https://github.com/jmcph4/crackerjack" target="_blank" title="jmcph4/crackerjack: A collection of crackmes">this project</a> of mine.</p>
+</section>
