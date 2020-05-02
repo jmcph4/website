@@ -1,0 +1,14 @@
+---
+layout: default
+title: Posts
+---
+{% for post in site.posts %}
+    <div class="row">
+        <div class="col-xs-12">
+            <h2><a class="post-link" href="{{ post.url }}">{{ post.title }}</a></h2>
+            <p class="post-exerpt">{{ post.excerpt }}</p>
+            <a href="{{ post.url }}">Read more</a>
+        </div>
+    </div>
+{% endfor %}
+
