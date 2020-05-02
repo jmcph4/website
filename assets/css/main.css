@@ -34,6 +34,10 @@ a:hover {
     text-decoration: bold;
 }
 
+#main-container {
+    margin-left: 1rem;
+}
+
 /* For generating BibTex references */
 input#show {
     display:none;
