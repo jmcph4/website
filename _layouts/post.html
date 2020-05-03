@@ -8,7 +8,7 @@
 <pre>
 @online &#123;
     author=&#123;Jack McPherson&#125;,
-    date=&#123;{{ page.date }}&#125;,
+    date=&#123;{{ page.date | date: "%Y-%m-%d" }}&#125;,
     title=&#123;{{ page.title }}&#125;,
     url=&#123;{{ site.url }}{{ page.url }}&#125;
 &#125;
