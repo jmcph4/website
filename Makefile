@@ -13,7 +13,7 @@ run:
 .PHONY: publish
 publish:
 	jekyll build
-	rm $(DEPLOY_LOCATION)/* -r && cp _site/* $(DEPLOY_LOCATION) -r && cd $(DEPLOY_LOCATION) && git add . && git commit -m "Add `date --iso-8601=seconds`"
+	rm $(DEPLOY_LOCATION)/* -r && cp _site/* $(DEPLOY_LOCATION) -r && cd $(DEPLOY_LOCATION) && git add . && git commit -m "Add `date --iso-8601=seconds`" && git push
 
 .PHONY: clean
 clean:
