@@ -1,0 +1,279 @@
+---
+date: 2018-01-19
+title: Writing a Simple Fuzzer in Python
+layout: post
+excerpt: I have had an interest in fuzzing for quite some time now, and had decided that it was time to start writing some of my own (very basic) fuzzing tools. In this post, we'll step through some of the basic things we might expect from a fuzzer and how we might achieve them using some of the code I have written
+started: 2018-01-14 16:19:00
+tags: [fuzzing,automated testing,program analysis,dynamic analysis,testing methodologies]
+---
+<p>I have had an interest in fuzzing for quite some time now, and had decided that it was time to start writing some of my own (very basic) fuzzing tools. In this post, we'll step through some of the basic things we might expect from a fuzzer and how we might achieve them using some of the code I have written.</p>
+
+<section id="s1">
+<h2>Introduction</h2>
+<p>Firslty, we need to grab our dependencies. For this tutorial, we'll be using two projects of mine: <a href="https://github.com/jmcph4/mph" title="" target="_blank">MPH</a> and <a href="https://github.com/jmcph4/fuzzbang" title="" target="_blank">Fuzzbang</a> (these will be discussed later in the tutorial):</p>
+
+<pre>
+$> git clone https://github.com/jmcph4/mph.git
+$> git clone https://github.com/jmcph4/fuzzbang.git
+</pre>
+
+<p>Secondly, create a directory for our project and <code>cd</code> into it:</p>
+
+<pre>
+$> mkdir fuzztut
+$> cd fuzztut
+</pre>
+
+<p>Thirdly, copy the actual Python packages into our project directory:</p>
+
+<pre>
+$> cp ../mph/mph mph -r
+$> cp ../fuzzbang/fuzzbang fuzzbang -r
+</pre>
+
+<p>Our project directory should now look like this:</p>
+
+<pre>
+$> ls
+fuzzbang mph
+</pre>
+
+<p>We're now ready to commence development!</p>
+</section>
+
+<section id="s2">
+<h2>The Target</h2>
+<p>While both of the main packages this post centres around are designed to be as generic and adaptable as possible, a concrete example is often easier to learn with. So, let's create our fuzzing target, <code>name</code>:</p>
+
+<script src="https://gist.github.com/jmcph4/95c3220ae04e9dea3ece19b0cb4285d0.js"></script>
+
+<p>All <code>name</code> does is prompts the user for their name via <code>stdout</code>, then accepts an <b>arbitrarily long</b> input from the user on <code>stdin</code>, and finally greets the user on <code>stdout</code> with their supplied name. This is a textbook example of a <a href="https://en.wikipedia.org/wiki/Buffer_overflow" target="_blank" title="Buffer overflow - Wikipedia">buffer overflow</a> (those familiar with the concept probably already saw this). To compile <code>name</code>, simply run:</p>
+
+<pre>
+$> gcc name.c -Wall -Wextra -Wshadow -pedantic -std=c11 -g3 -o name
+</pre>
+
+<p>Our project now looks like this:</p>
+
+<pre>
+$> ls
+fuzzbang mph name.c name
+</pre>
+</section>
+
+<section id="s3">
+<h2>Talking to the Target</h2>
+<p>Now that we have our target program, we need some way to talk to it from our Python code. Python 3 has the <code>subprocess</code> module for this reason, but we will use a simple wrapper around it: MPH. MPH is a simple Python package which essentially just wraps the parts of <code>subprocess</code> relevant for our purposes. MPH allows a Python programmer to execute a program with various inputs and capture the output (not just <code>stdout</code> and <code>stderr</code>, but also the return code and any signals received). From the example in the <a href="https://github.com/jmcph4/mph/blob/8fa42aebc92e864c6832009aa0c124b3b9b3e0b8/README.md" title="mph/README.md at 8fa42aebc92e864c6832009aa0c124b3b9b3e0b8 · jmcph4/mph · GitHub" target="_blank">MPH README</a>:</p>
+
+<pre>
+from mph import program
+
+prog = program.Program("/path/to/myprog", [])   # initialise program
+prog.append_string_stdin("Hello, world!")       # write to stdin
+prog.exec()                                     # run program
+
+# check return value of guest executable
+if prog.retval == 0:
+    print(prog.stdout)
+else:
+    print("Inferior returned with return code " + str(prog.retval) + "\n")
+</pre>
+
+<p>In this example, the string <code>"Hello, world!"</code> could be replaced with any arbitrary string (insertion of arbitrary <i>binary</i> data is available via <code>Program.append_stdin</code>).</p>
+
+<p>Let's start writing our fuzzer in Python. Create a file called <code>fuzztut.py</code> and use your preferred editor to open it. We'll start off by writing a function that sends a string to <code>name</code> and then executes it:</p>
+
+<pre>
+import sys
+from mph.program import Program
+from fuzzbang.alphanumericfuzzer import AlphaNumericFuzzer
+
+PATH_TO_NAME = "" # fill this in yourself
+
+def run(string):
+    """
+    Sends the provided string to the `name` program and runs it with that
+    input. Returns the return value `name` gives us
+    """
+    prog = Program(PATH_TO_NAME, [])
+    prog.append_string_stdin(string)
+    prog.exec()
+    
+    return prog.retval
+</pre>
+
+<p>Note that you will need to provide an <b>absolute</b> path to <code>name</code> on line 5. For example, my version of line 5 would look like:</p>
+
+<pre>PATH_TO_NAME = "/home/jack/dev/fuzztut/name" # fill this in yourself</pre>
+
+<p>Our project now looks like this:</p>
+
+<pre>
+$> ls
+fuzzbang fuzztut.py mph name name.c 
+</pre>
+</section>
+
+<section id="s4">
+<h2>Generating Test Data</h2>
+<p>At this point, we can send strings to <code>name</code>, run it, and see what the result was. This alone is just a convoluted way of running programs - what we need is a way to generate meaningful test data to give to <code>name</code>. For this, we'll use Fuzzbang. Fuzzbang is a Python 3 package providing a framework for producing fuzzing data. Consulting the <a href="https://github.com/jmcph4/fuzzbang/blob/31ebf5173abc4b03dd6ccd0a5d2a7466ea92d915/README.md" target="_blank" title="fuzzbang/README.md at 31ebf5173abc4b03dd6ccd0a5d2a7466ea92d915 · jmcph4/fuzzbang · GitHub">README</a>:</p>
+
+<pre>
+from fuzzbang.alphanumericfuzzer import AlphaNumericFuzzer
+
+N = 10 # number of test cases
+
+# bounds on length of alphanumeric strings
+MIN_LEN = 0
+MAX_LEN = 8
+
+f = AlphaNumericFuzzer(MIN_LEN, MAX_LEN) # fuzzer object
+
+# generate test cases
+for i in range(N):
+    data = f.generate() # generate string
+    print("(" + str(len(data)) + ")") # print length of string
+    print(data) # print string itself
+</pre>
+
+<p>Let's now write a function that generates an alphanumeric string of a certain maximum length. It should be noted at this point that there is no special reason to use just alphanumeric strings - arbitrary binary data could be used (and could potentially even expose further, more subtle vulnerabilities in programs). We'll use alphanumeric input out of simplicity. In <code>fuzztut.py</code>:</p>
+
+<pre>
+def generate_input(n):
+    """
+    Returns an alphanumeric string with a length no greater than n.
+    """
+    fuzzer = AlphaNumericFuzzer(0, n)
+    
+    return fuzzer.generate()
+</pre>
+
+<p>A few examples of how you might call <code>generate_input</code>:</p>
+
+<pre>
+generate_input(0) # (empty string)
+generate_input(1) # q
+generate_input(1) # T
+generate_input(1) # o
+generate_input(8) # rCyJblUl
+generate_input(8) # (empty string)
+generate_input(8) # M9R
+</pre>
+
+<p>These are some examples taken from actual calls to the function on my local machine. Calls are repeated to demonstrate the pseudorandom nature of the output. Note that some calls to <code>generate_input(8)</code> returned strings <i>less</i> than eight characters long.</p>
+</section>
+
+<section id="s5">
+<h2>Implementing the Main Program</h2>
+<p>We now have a way of interacting with <code>name</code> (<code>run</code>) and a way of generating (pseudo)random inputs for <code>name</code> (<code>generate_input</code>). All we need now is some code to drive the actual fuzzing process by bringing the two together.</p>
+
+<pre>
+if _name__ == "__main__":
+    # usage
+    if len(sys.argv) != 3:
+        print("usage: python3 fuzztut.py num_cases max_length")
+        exit(1)
+        
+    # command-line arguments    
+    num_cases = int(sys.argv[1]) # number of test cases to run
+    max_length = int(sys.argv[2]) # maximum length of each string
+       
+    results = [] # list for storing the result of each test
+    
+    # main loop
+    for i in range(num_cases):
+        input = generate_input() # generate input string
+        return_value = run(input) # run name with our input
+        
+        # save test results to our global results list
+        test_result = {}
+        test_result["num"] = i
+        test_result["input"] = input
+        test_result["output"] = return_value
+        results.append(test_result)
+
+    # print summary
+    for test in results:
+        print("Case #{:d}:".format(test["num"]))
+        print("    IN: " + test["input"])
+        print("    OUT: {:4d}".format(test["output"]))
+        print("\n")
+</pre>
+
+<p>Using our fuzzer is simple:</p>
+
+<pre>
+$> python3 fuzztut.py
+usage: python3 fuzztut.py num_cases max_length
+</pre>
+
+<p>For example,</p>
+
+<pre>
+$> python3 fuzztut.py 10 8
+
+</pre>
+</section>
+
+<section id="s6">
+<h2>Fuzzing the Target</h2>
+<p>Now that our fuzzer works, we can focus on fuzzing <code>name</code> rather than writing the fuzzer. Recall that <code>name</code> allocates a buffer of fixed size, yet accepts arbitrarily long input. Studying the code for <code>name</code>, it's <a href="https://gist.github.com/jmcph4/95c3220ae04e9dea3ece19b0cb4285d0#file-name-c-L4" target="_blank" title="Simple toy program in C that greets the user with their desired name (fuzzing target) · GitHub">obvious</a> that the buffer is 16 characters long. With this in mind, it makes sense that inputs longer than 16 characters are likely to cause issues. Let's try it:</p>
+
+<pre>
+$> python3 fuzztut.py 10 32
+Case #0:
+    IN: wgZ0S7rF08
+    OUT:    0
+Case #1:
+    IN: y6tLHoJ2u4LRs158aAIlrHsVOHT
+    OUT:  -11
+Case #2:
+    IN: X0Ji7b5Z4TgYLYRpC0RAE740Xk
+    OUT:  -11
+Case #3:
+    IN: 6sOweDnPfmZdIxLiKm
+    OUT:    0
+Case #4:
+    IN: LTU
+    OUT:    0
+Case #5:
+    IN: XlAOQtgptB
+    OUT:    0
+Case #6:
+    IN: rYAi73kaZnwY
+    OUT:    0
+Case #7:
+    IN: B3LOMahprORnA69ROD9yI49OP
+    OUT:   -7
+Case #8:
+    IN: 6Tyrvvn0IK2GeURZoElR
+    OUT:    0
+Case #9:
+    IN: TZjgYFR
+    OUT:    0
+</pre>
+
+<p>Notice that <code>name</code> returned -11 on inputs 26-27 characters long, and -7 on an input 25 characters long. Let's see what happens if we execute <code>name</code> ourselves with the same inputs:</p>
+
+<pre>
+$> ./name
+What's your name? y6tLHoJ2u4LRs158aAIlrHsVOHT
+Hi there, y6tLHoJ2u4LRs158aAIlrHsVOHT!
+Segmentation fault
+$> ./name
+What's your name? B3LOMahprORnA69ROD9yI49OP
+Hi there, B3LOMahprORnA69ROD9yI49OP!
+Bus error
+</pre>
+
+<p>Our fuzzer has revealed multiple inputs that cause <code>name</code> to reliably crash!</p>
+</section>
+
+<section id="s7">
+<h2>Conclusion</h2>
+<p>The bugs we found in the previous section warrant further investigation; however, actually <i>fixing</i> the bugs in <code>name</code> is outside the scope of this tutorial. These bugs will be addressed and explained in another post.</p>
+
+<p>In summary, we used two small, very simple Python packages to write a (very simple) fuzzer to help us diagnose issues in a program we wrote. While <code>name</code> is only a toy program (with an intentional vulnerability), most of what we did in this tutorial - including the code we wrote - can be easily abstracted to any general binary executable. Both MPH and Fuzzbang provide facilities for doing so.</p>
+
+<p>The complete code for <code>fuzztut.py</code> is available as a Gist <a href="https://gist.github.com/jmcph4/51b0884c8cca76b879d364a33f8da934" target="_blank" title="Full, working code for Writing a Simple Fuzzer in Python at https://jmcph4.github.com/2018/01/19/writing-a-simple-fuzzer-in-python">here</a>.</p>
+</section>

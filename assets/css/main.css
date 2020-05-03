@@ -1,0 +1,53 @@
+#masthead {
+    padding-top: 60px;
+    padding-bottom: 60px;
+    text-align: left;
+    background-color: #D9230F;
+    color: #FFFFFF;
+}
+
+#masthead-container {
+    padding: 0px;
+}
+
+body h1, h2, h3, h4, h5, h6, .nav-item {
+    font-family: 'Lato', sans-serif !important;
+}
+
+body p {
+    font-family: 'Libre Baskerville', serif !important;
+}
+
+a {
+    color: #D9230F !important;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+.post-special-link {
+    font-weight: bold;
+}
+
+.post-special-link:hover {
+    text-decoration: bold;
+}
+
+#main-container {
+    margin-left: 1rem;
+}
+
+/* For generating BibTex references */
+input#show {
+    display:none;
+}
+
+span.bibtex-content {
+    display:none;
+}
+
+input#show:checked ~ span.bibtex-content {
+  display:block;
+}
+
