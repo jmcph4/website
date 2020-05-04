@@ -1,0 +1,20 @@
+<label for="show">
+    <a class="post-special-link"><span>[BibTeX]</span></a>
+</label>
+<input type=radio id="show" name="group">
+<span class="bibtex-content">
+<pre>
+@online &#123;
+    author=&#123;Jack McPherson&#125;,
+    date=&#123;{{ page.date | date: "%Y-%m-%d" }}&#125;,
+    title=&#123;{{ page.title }}&#125;,
+    url=&#123;{{ site.url }}{{ page.url }}&#125;
+    urldate=&#123;{{ "now" | date: "%Y-%m-%d" }}&#125;,
+&#125;
+</pre>
+</span>
+
+<a href="https://translate.google.com/translate?sl=auto&tl=en&u={{ site.url | url_encode }}{{ page.url | url_encode }}" target="_blank" class="post-special-link">[Translate]</a>
+
+<a href="https://scholar.google.com/scholar?q={% for tag in page.tags %}{{ tag }}+{% endfor %}" target="_blank" class="post-special-link">[Related]</a>
+
