@@ -1,0 +1,69 @@
+---
+date: 2018-05-04
+title: DeFi Reading List
+layout: page
+started: 2020-05-04 12:38:12
+tags: [DeFi,decentralised finance,Ethereum,arbitrage,quantitative finance,market microstructure,order book,matching engine]
+---
+
+<p>This is a living, breathing page, and represents the latest and most relevant academic research pertaining to DeFi and arbitrage opportunities arising from it.</p>
+
+<ol>
+    <li>
+        <cite><a href="https://arxiv.org/abs/1904.05234" target="_blank">Flash Boys 2.0: Frontrunning, Transaction Reordering, and Consensus Instability in Decentralized Exchanges</a></cite> <a href="http://semion.io/doc/flash-boys-2-0-frontrunning-transaction-reordering-and-consensus-instability-in-decentralized-exchanges" target="_blank">[arXiv Pre-Print]</a><br>
+        <p>Easily the most prominent paper on this list. Describes the operation of various DEXes and categorises them accordingly, details various arbitrage techniques, presents a formal, mathematical model of what the authors call <i>Priority Gas Auctions (PGAs)</i>, and provides empirical data derived from the authors' novel instrumentation infrastructure (which is also thoroughly described).</p>
+    </li>
+    <li>
+        <cite><a href="https://arxiv.org/abs/2003.03810" target="_blank">Attacking the DeFi Ecosystem with Flash Loans for Fun and Profit</a></cite> <a href="https://semion.io/doc/attacking-the-defi-ecosystem-with-flash-loans-for-fun-and-profit" target="_blank">[arXiv Pre-Print]</a><br>
+        <p>Describes how flash loans can be used to create and subsequently exploit arbitrage opportunities and also perform wash trading, presents a case study of two real-world instances of such activities, and also formulates an optimisation model to maximise profit from such attacks. Paper is very recent (as of the time of writing, at least).</p>
+    </li>
+    <li>
+        <cite><a href="https://www.youtube.com/watch?v=7yJa_6CtvHk" target="_blank">Flash Boys 2.0 - Ari Juels - CES Summit '19</a></cite> [YouTube Video]<br>
+        <p>A presentation given by Ari Juels - one of the authors of #1 - on the corresponding paper (i.e. #1). Provides a good overview of the paper in a seminar presentation format.</p>
+    </li>
+    <li>
+        <cite><a href="https://arxiv.org/abs/1902.05164" target="_blank">SoK: Transparent Dishonesty: front-running attacks on Blockchain</a></cite><a href="https://semion.io/doc/sok-transparent-dishonesty-front-running-attacks-on-blockchain" target="_blank"> [arXiv Pre-Print]</a><br>
+        <p>Surveys instances of frontrunning across the top 25 most popular DApps (at the time of publication, obviously) and provides a detail analysis of the Status.im ICO. The latter analysis uncovers evidence indicative of miner frontrunning of token purchases (somewhat analagous to pre-mining of days of old).</p>
+    </li>
+    <li>
+        <cite><a href="https://dl.acm.org/doi/10.1145/2976749.2978408" target="_blank">On the Instability of Bitcoin Without the Block Reward</a></cite><br>
+        <p>Analyses the security of the Bitcoin consensus model <i>without</i> block rewards and finds that this results in an undesirable equilibrium state where miners collude to steal rewards by forking attractive blocks. While this paper addresses Bitcoin - the results of which have some troubling implications for its long-term future - the results provide an interesting perspective on <i>Miner Extractable Value (MEV)</i>, a concept explored in #1. It may be of interest to note that this paper is somewhat old by cryptoeconomics standards.</p>
+    </li>
+    <li>
+        <cite><a href="https://hackingdistributed.com/2017/08/13/cost-of-decent" target="_blank">The Cost of Decentralization in 0x and EtherDelta</a></cite><br>
+        <p>An interesting blog post discussing the unique challenges that decentralisation of exchanges presents - with particular emphasis on both 0x and EtherDelta (both of which receive specific discussion in #1).</p>
+    </li>
+    <li>
+        <cite><a href="https://hackingdistributed.com/2020/03/11/flash-loans" target="_blank">Attacking the DeFi Ecosystem with Flash Loans for Fun and Profit</a></cite><br>
+        <p>A blog post covering its associated paper (#2). Provides a nice outline and summary of the work.</p>
+    </li>
+    <li>
+        <cite><a href="https://arxiv.org/abs/1903.12458" target="_blank">Market Manipulation as a Security Problem</a></cite> <a href="https://semion.io/doc/market-manipulation-as-a-security-problem" target="_blank">[arXiv Pre-Print]</a><br>
+        <p>Presents various desirable security properties of <i>traditional financial exchanges</i> and details how various market manipulation strategies can undermine them. While this paper is in no way specific to cryptocurrencies, it caught my attention as I'm of the personal belief that both its content and research methodologies can be applied to the current DeFi ecosystem.</p>
+    </li>
+    <li>
+        <cite><a href="https://arxiv.org/abs/2002.08099" target="_blank">The Decentralized Financial Crisis: Attackng DeFi</a></cite> <a href="https://semion.io/doc/the-decentralized-financial-crisis-attacking-defi" target="_blank">[arXiv Pre-Print]</a><br>
+        <p>Describes what the authors deem to be systemic weaknesses in current DeFi markets and how they may be analagous to the Global Financial Crisis (GFC) of 2008. Very promising paper (at least <i>a priori</i>) due to its fascinating premise and also how fresh it is (once again, as of the time of writing).</p>
+    </li>
+    <li>
+        <cite><a href="https://medium.com/coinmonks/how-to-turn-20m-into-340m-in-15-seconds-48d161a42311" target="_blank">How to turn $20M into $340M in 15 seconds</a></cite><br>
+        <p>Blog post detailing some very severe perceived weaknesses in the MakerDAO (v2) protocol and corresponding governance model. This article received a fair amount of news coverage in popular cryptocurrency-related media and is only a few months old.</p>
+    </li>
+</ol>
+
+<section id="bibliography">
+    <h2>Bibliography</h2>
+    <ol>
+        <li id="ref-1">P. Daian, S. Goldfeder, T. Kell, Y. Li, X. Zhao, I. Bentov, L. Breidenbach, and A. Juels, <i>Flash boys 2.0: Frontrunning, transaciton reordering, and consensus instability in decentralized exchanges</i>, 2019.</li>
+        <li id="ref-2">K. Qin, L. Zhou, B. Livshits, and A. Gervais, <i>Attacking the defi ecosystem with flash loans for fun and profit</i>, 2020.</li>
+        <li id="ref-3">M. D. C. Initiative. (Oct. 15, 2019). Flash boys 2.0 - ari juels - ces summit '19, [Online]. Available: <a href="https://www.youtube.com/watch?v=7yJa_6CtvHk" target="_blank">https://www.youtube.com/watch?v=7yJa_6CtvHk</a> (visited on 05/04/2020).</li>
+        <li id="ref-4">S. Eskandari, S. Moosavi, and J. Clark, <i>Sok: Transparent dishonesty: Frontrunning attacks on blockchain</i>, 2019.</li>
+        <li id="ref-5">M. Carlsten, H. Kalodner, S. M. Weinberg, and A. Narayanan, "On the instability of bitcoin without the block reward," in <i>Proceedings of the 2016 ACM SIGSAC Conference on Computer and Communications Security</i>, ser. CCS '16, Vienna, Austria: Association for Computing Machinery, 2016, pp. 154-167, ISBN: 9781450341394, DOI: 10.1145/2976749.2978408.</li>
+        <li id="ref-6">I. Bentov, L. Breidenbach, P. Daian, A. Juels, L. Yunqi, and Z. Xueyuan. (Aug. 13, 2017). The cost of decentralization in 0x and etherdelta, [Online]. Available: <a href="https://hackingdistributed.com/2017/08/13/cost-of-decent/" target="_blank">https://hackingdistributed.com/2017/08/13/cost-of-decent</a> (visited on 05/04/2020).</li>
+        <li id="ref-7">K. Qin, L. Zhou, B. Livshits, and A. Gervais. (Mar. 11, 2020). Attacking the defi ecosystem with flash loans for fun and profit, [Online]. Available: <a href="https://hackingdistributed.com/2020/03/11/flash-loans/" target="_blank">https://hackingdistributed.com/2020/03/11/flash-loans/</a> (visited on 05/04/2020).</li>
+        <li id="ref-8">V. Mavroudis, <i>Market manipulation as a security problem</i>, 2019.</li>
+        <li id="ref-9">L. Gudgeon, D. Perez, D. Harz, A. Gervais, and B. Livshits, <i>The decentralized financial crisis: Attacking defi</i>, 2020.</li>
+        <li id="ref-10">M. Zoltu. (Dec. 9, 2019). how to turn 20m into 340m in 15 seconds, [Online]. Available: <a href="https://medium.com/coinmonks/how-to-turn-20m-into-340m-in-15-seconds-48d161a42311" target="_blank">https://medium.com/coinmonks/how-to-turn-20m-into-340m-in-15-seconds-48d161a42311</a> (visited on 05/04/2020).</li>
+    </ol>
+</section>
+
