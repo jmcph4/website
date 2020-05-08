@@ -1,0 +1,69 @@
+---
+date: 2020-05-09 08:30:00
+title: "Pre-Print Saturday #1: 9 May 2020"
+layout: post
+started: 2020-05-08 15:00:00
+tags: [proof-of-stake, blockchain, consensus, byzantine fault tolerance, BFT, ethereum, bitcoin, DEX, DeFi, memory encryption, cold boot attack, memory protection, paging, solidity, event-b, formal verification, formal methods, biocybersecurity, proof-of-work, cross-chain communication]
+---
+<ul>
+    <li>
+        <a href="https://arxiv.org/abs/2005.03564" target="_blank"><cite>QuickSync: A Quickly Synchronizing PoS-Based Blockchain Protocol</cite></a><a href="https://semion.io/doc/quicksync-a-quickly-synchronizing-pos-based-blockchain-protocol" target="_blank">[Semion.io]</a><br>
+        <p>The authors present <i>QuickSync</i>, a Proof-of-Stake blockchain consensus protocol based on Ouroboros[<a href="{{ post.url }}#ref-6">6</a>]. The authors claim Byzantine resistance against an adversary with up to 50% stake and also performance improvements. The paper also contains proofs for both the liveness and persistence of this protocol.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.03199" target="_blank"><cite>Enabling Cross-chain Transactions: A Decentralized Cryptocurrency Exchange Protocol</cite></a><a href="https://semion.io/doc/enabling-cross-chain-transactions-a-decentralized-cryptocurrency-exchange-protocol" target="_blank">[Semion.io]</a><br>
+        <p>The authors propose a decentralised <i>cross</i>-cryptocurrency exchange, motivated by trading Bitcoins for other cryptocurrencies. The authors implement a prototype as a DApp running on an Ethereum testnet.</p>
+        <p>This paper is particularly interesting to me for two main reasons. Firstly, given my current research - both personal and coursework-related - into DExes and other DeFi platforms. Secondly, my interest in projects such as <i>tBTC</i>[<a href="{{ post.url }}#ref-7">7</a>]</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2004.09252" target="_blank"><cite>MemShield: GPU-assisted software memory encryption</cite></a><a href="https://semion.io/doc/memshield-gpu-assisted-software-memory-encryption" target="_blank">[Semion.io]</a><br>
+        <p>The authors propose <i>MemShield</i>, a framework for transparently encrypting primary memory to resist cold boot attacks. <i>MemShield</i> is implemented as a C library that interacts with <code>userfaultfd</code> to monitor for page requests from userspace. This system allows page-level granularity for memory protection.</p>
+        <p>Cold boot attacks have always fascinated me, so mitigations against them are of particular interest as well. I'm impressed by both the granularity and compatibility of this project: <i>no changes to existing applications are required</i>.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.01261" target="_blank"><cite>Formal Verification of Solidity contracts in Event-B</cite></a><a href="https://semion.io/doc/formal-verification-of-solidity-contracts-in-event-b" target="_blank">[Semion.io]</a><br>
+        <p>The authors define a subset of Solidity which can then be translated into Event-B - a modelling framework of which I have never heard of until discovering this paper. The authors assert that this greatly helps in the formal verification of Ethereum smart contracts.</p>
+        <p>Recent coursework that I'm undertaking has required me to study different testing methodologies for Ethereum smart contracts. So far, this has only involved two categories: symbolic execution and fuzzing. This paper expands on the formal verification route - a category which I haven't covered in depth yet.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.02135" target="_blank"><cite>Human Factors in Biocybersecurity Wargames</cite></a><a href="https://semion.io/doc/human-factors-in-biocybersecurity-wargames" target="_blank">[Semion.io]</a><br>
+        <p>Admittedly, I included this simply due to the spectacular title. Doesn't it just sound cool?</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.01865" target="_blank"><cite>JaxNet: Scalable Blockchain Network</cite></a><a href="https://semion.io/doc/jaxnet-scalable-blockchain-network" target="_blank">[Semion.io]</a><br>
+        <p>The authors propose a novel design for a scalable, decentralised Proof-of-Work blockchain, called <i>JaxNet</i>. Their design uses a network of parallel chains that rewards miners for their computational effort in maintaining the network.</p>
+        <p>This problem obviously garners an incredible amount of attention - both in academia and industry. Any new publications on the matter seem worthy of a mention.</p>
+    </li>
+</ul>
+
+<section id="biliography">
+    <h2>Bibliography</h2>
+    <ol>
+        <li id="ref-1">S. Siddiqui and S. Gujar, <i>QuickSync: A Quickly Synchronizing PoS-based Blockchain Protocol</i>, 2020</li>
+        <li id="ref-2">H. Tian, K. Xue, S. Li, J. Xu, J. Liu, and J. Zhao, <i>Enabling Cross-chain Transactions: A Decentralized Cryptocurrency Exchange Protocol</i>, 2020</li>
+        <li id="ref-3">P. Santucci, E. Ingrassia, G. Picierro, and M. Cesati, <i>MemShield: GPU-assisted Software Memory Encryption</i>, 2020</li>
+        <li id="ref-4">J. Zhu, K. Hu, M. Filali, J.-P. Bodeveix, and J.-P. Talpin, <i>Formal Verification of Solidity Smart Contracts in Event-B</i>, 2020</li>
+        <li id="ref-5">L. Potter and X.-L. Palmer, <i>Human Factors in Biocybersecurity Wargames</i>, 2020</li>
+        <li id="ref-6">A. Kiayias, A. Russell, B. David, and R. Oliynykov, "Ouroboros: A Provably Secure Proof-of-Stake Blockchain Protocol," in <i>Advances in Cryptology - CRYPTO 2017</i>, J. Katz and H. Shacham, Eds., Cham: Springer International Publishing, 2017, pp. 357-388, ISBN: 978-3-319-63688-7</li>
+        <li id="ref-7">"tBTC: A Decentralized Redeemable BTC-backed ERC-20 Token," Keep Network, May 7, 2020</li>
+    </ol>
+</section>
+
+<section id="about-pre-print-saturdays">
+    <h2>About <i>Pre-Print Saturday</i></h2>
+        <section id="about-what">
+            <h3>What is this?</h3>
+            <p><i>Pre-Print Saturday</i> is a series of posts I publish every Saturday. They summarise the previous week's arXiv submissions that I find interesting.</p>
+        </section>
+        
+        <section id="about-why">
+            <h3>Why do this?</h3>
+            <ol>
+                <li>To keep me up-to-date with current literature</li>
+                <li>To provide an organised way of recording and documenting this literature</li>
+                <li>To provide a way for friends, collegues, and the public who may share my interests to remain up-to-date in a less labour-intensive way</li>
+            </ol>
+        </section>
+</section>
+
+
