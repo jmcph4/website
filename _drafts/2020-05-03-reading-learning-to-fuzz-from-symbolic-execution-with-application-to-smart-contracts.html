@@ -1,0 +1,73 @@
+---
+date: 2018-05-03
+title: Notes on "Learning to Fuzz from Symbolic Execution with Application to Smart Contracts"
+layout: post
+started: 2020-05-03 21:00:00
+tags: [fuzzing, symbolic execution, imitation learning, smart contracts, Ethereum, software testing, machine learning]
+---
+<section id="prelude">
+    <p>For some coursework I'm currently undertaking, I've had to read a paper entitled <cite>Learning to Fuzz from Symbolic Execution with Application to Smart Contracts</cite>[<a href="{{ post.url }}#ref-1">1</a>] in order to prepare a seminar presentation for assessment.</p>
+    <p>As such, I've decided to typeset the handwritten notes I took as I read through the entirety of the paper.</p>
+</section>
+
+<section id="overview">
+    <h2>2 - OVERVIEW</h2>
+    <section id="fuzzing-challenges">
+        <h3>2.2 - Challenges of Fuzzing Smart Contracts</h3>
+        <ul>
+            <li>Smart contracts are stateful</li>
+            <li>Each transaction consists of</li>
+            <ol>
+                <li>Contract function (with arguments)</li>
+                <li>Address of caller</li>
+                <li>Gas sent to contract</li>
+            </ol>
+            <li>Statefulness hinders automated testing</li>
+            <li>Often deep states</li>
+            <ul>                
+                <li>Require long sequences of transactions to reach them</li>
+                <ul>
+                    <li>Due to preconditions, etc.</li>
+                </ul>
+                <li>Limits code coverage</li>
+            </ul>
+        </ul>
+
+        <section id="limited-coverage-existing-fuzzers">
+            <h4>Limited Coverage of Existing Fuzzers</h4>
+            <ul>
+                <li>Existing fuzzers fail to reach deep state</li>
+                <ul>
+                    <li>ECHIDNA</li>
+                    <ul>
+                        <li>57% coverage</li>
+                        <li>Fails to cover functions with preconditions</li>
+                    </ul>
+                </ul>
+            </ul>
+        </section>
+
+        <section id="limited-coverage-existing-symbolic-execution-tools">
+            <h4>Limited Coverage of Existing Symbolic Execution Tools</h4>
+            <ul>
+                <li>Reasoning about sequences of transactions symbolically</li>
+                <ul>
+                    <li>Block state explosion</li>
+                    <ul>
+                        <li>Number of block states grows exponentially in number of analysed symbolic transactions, \(k\):</li>
+                        \[n_b\left(k\right)\in\mathcal{O}\left(n_b^k\right)\]
+
+                    </ul>
+                </ul>
+            </ul>
+        </section>
+    </section>
+</section>
+
+<section id="bibliography">
+    <h2>Bibliography</h2>
+    <ol>
+        <li id="ref-1">J. He, M. Balunovic, N. Ambroladze, P. Tsankov, and M. Vechev, "Learning to Fuzz from Symbolic Execution with Application to Smart Contracts" in <i>Proceedings of the 2019 ACM SIGSAC Conference on Computer Communications Security</i>, ser. CCS' 19, London, United Kingdom: Association for Computing Machinery, 2019, pp. 531-548, ISBN: 9781450367479, DOI: 10.1145/3319535.3363230</li>
+    </ol>
+</section>
+
