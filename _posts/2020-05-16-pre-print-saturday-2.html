@@ -1,0 +1,92 @@
+---
+date: 2020-05-16 10:45:00 +1000
+title: "Pre-Print Saturday #2: 16 May 2020"
+layout: post
+started: 2020-05-15 16:31:40
+tags: [proof-of-work, consensus, congestion control, all-pay auctions, hashing, MAC addresses, anonymity, k-anonymity, scalability, scalable blockchain, pump and dump, market manipulation, secure enclave, memory safety, Intel SGX, static analysis, Ethereum, smart contracts, mining pools, capabilities]
+---
+<ul>
+    <li>
+        <a href="https://arxiv.org/abs/2005.06093" target="_blank"><cite>Stabilizing Congestion in Decentralized Record-Keepers</cite></a><a href="https://semion.io/doc/stabilizing-congestion-in-decentralized-record-keepers" target="_blank">[Semion.io]</a><br>
+        <p>The authors present a proposal for a distributed ledger system and accompanying payment system that leverages recent advancements in both PoW consensus and formal verification. The authors also present a formal economic model of their protocol design. Of particular interest is that their proposed system reaches stability in the absence of block rewards - relying solely on transaction fees to maintain consensus.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.05521" target="_blank"><cite>A Difficulty in Controlling Blockchain Mining Costs via Cryptopuzzle Difficulty</cite></a><a href="https://semion.io/doc/a-difficulty-in-controlling-blockchain-mining-costs-via-cryptopuzzle-difficulty" target="_blank">[Semion.io]</a><br>
+        <p>The authors model PoW mining as an all-pay auction and prove several properties of the auction's allocation function.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.06580" target="_blank"><cite>Practical Hash-based Anonymity for MAC Addresses</cite></a><a href="https://semion.io/doc/practical-hash-based-anonymity-for-mac-addresses" target="_blank">[Semion.io]</a><br>
+        <p>The authors present a viable method for anonymising MAC addresses through hashing. They improve on previous work using a hash-based strategy by using more expensive hash functions and ensuring \(k\)-bit anonymity.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.06665" target="_blank"><cite>Scaling Blockchains Without Giving up Decentralization and Security</cite></a><a href="https://semion.io/doc/scaling-blockchains-without-giving-up-decentralization-and-security" target="_blank">[Semion.io]</a><br>
+        <p>The authors present what they consider to be a blockchain design that escapes the so-called blockchain trilemma by providing an arbitrarily scalable blockchain without weakening security nor decentralisation.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.06610" target="_blank"><cite>Pump and Dumps in the Bitcoin Era: Real Time Detection of Cryptocurrency Market Manipulations</cite></a><a href="https://semion.io/doc/pump-and-dumps-in-the-bitcoin-era-real-time-detection-of-cryptocurrency-market-manipulations" target="_blank">[Semion.io]</a><br>
+        <p>The authors present their research into cryptocurrency market manipulation (albeit in centralised crypto-fiat exchanges). They attribute the susceptibility of cryptocurrency to pump and dumps to the often low liquidity in certain more obscure cryptocurrencies. One finding of note is the operation of a large pump and dump community operating on Binance.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.06227" target="_blank"><cite>eThor: Practical and Provably Sound Static Analysis of Ethereum Smart Contracts</cite></a><a href="https://semion.io/doc/ethor-practical-and-provably-sound-static-analysis-of-ethereum-smart-contracts" target="_blank">[Semion.io]</a><br>
+    <p>The authors present <i>eThor</i>, a provably sound static analyser for Ethereum smart contracts.</p>
+    <p>This paper is of particular interest as it provides another advancement in the first pillar of smart contract testing: static analysis. I've written about dynamic analysis tools (mainly fuzzers) before, and previous pre-prints in the series have discussed formal verification too.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.06026" target="_blank"><cite>Enabling Deletion in Append-Only Blockchains (Short Summary / Work in Progress)</cite></a><a href="https://semion.io/doc/enabling-deletion-in-append-only-blockchains-short-summary-work-in-progress" target="_blank">[Semion.io]</a><br>
+    <p>The authors describe a method of of <i>deleting</i> previously confirmed blocks in a blockchain. While this seems to be entirely against the point of blockchains in the first place, but the authors provide a consensus-driven method for deleting blocks by way of context isolation.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.05996" target="_blank"><cite>Towards Memory Safe Python Enclave for Security Sensitive Computation</cite></a><a href="https://semion.io/doc/towards-memory-safe-python-enclave-for-security-sensitive-computation" target="_blank">[Semion.io]</a><br>
+    <p>The authors extend advancements in Intel SGX-based memory enclaves implemented in Rust to Python. They cite the existing prevalance of Python in fields such as data science as a reason for such an extension.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.06356" target="_blank"><cite>Impact of Geo-distribution and Mining Pools on Blockchains: A Study of Ethereum</cite></a><a href="https://semion.io/doc/impact-of-geo-distribution-and-mining-pools-on-blockchains-a-study-of-ethereum" target="_blank">[Semion.io]</a><br>
+    <p>The authors present their findings from a month-long study into Ethereum network structure. Their study used geographically dispersed observation points to observe the geographical distribution of Ethereum and the impact of mining pools on the network.</p>
+    <p>Personally, I think their study could have been more geographically dispersed, but I assume there were resource constraints on the authors precluding this.</p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.05944" target="_blank"><cite>CapablePtrs: Securely Compiling Partial Programs using the Pointers-as-Capabilities Principle</cite></a><a href="https://semion.io/doc/capableptrs-securely-compiling-partial-programs-using-the-pointers-as-capabilities-principle" target="_blank">[Semion.io]</a><br>
+    <p>The authors present a C-to-CHERI compiler of their development, which implements the Pointers-as-Capabilities model. One result is that their compiler can provide strong security guarantees for an individual compilation unit - even if it is later linked against buggy or malicious code.</p>
+    <p></p>
+    </li>
+    <li>
+        <a href="https://arxiv.org/abs/2005.06881" target="_blank"><cite>Identifying Bugs in Make and JVM-Oriented Builds</cite></a><a href="https://semion.io/doc/identifying-bugs-in-make-and-jvm-oriented-builds" target="_blank">[Semion.io]</a><br>
+    <p>The authors present a tool called <i>buildfs</i> which can reason about Make- and JVM-based build systems by interpreting their specification from the build scripts themselves and then analysing file system activity to see how the actual operation of the build may deviate from its specification.</p>
+    </li>
+</ul>
+
+<section id="biliography">
+    <h2>Bibliography</h2>
+    <ol>
+        <li id="ref-1">A. Kattis and F. Trottner, <i>Stabilizing Congestion in Decentralized Record-Keepers</i>, 2020</li>
+        <li id="ref-2">V. S. S. Nadendla and L. R. Varshney, <i>A Difficulty in Controlling Blockchain Mining Costs via Cryptopuzzle Difficulty</i>, 2020</li>
+        <li id="ref-3">J. Ali and V. Dyo, <i>Practical Hash-based Anonymity for MAC Addresses</i>, 2020</li>
+        <li id="ref-4">G. Del Monte, D. Pennino and M. Pizzonia, <i>Scaling Blockchains Without Giving up Decentralization and Security</i>, 2020</li>
+        <li id="ref-5">M. La Morgia, A. Mei, F. Sassi and J. Stefa, <i>Pump and Dumps in the Bitcoin Era: Real Time Detection of Cryptocurrency Market Manipulations</i>, 2020</li>
+        <li id="ref-6">C. Schneidewind, I. Grishchenko, M. Scherer and M. Maffei, <i>eThor: Practical and Provably Sound Static Analysis of Ethereum Smart Contracts</i>, 2020</li>
+        <li id="ref-7">M. Kuperberg, <i>Enabling Deletion in Append-Only Blockchains (Short Summary / Work in Progress)</i>, 2020</li>
+        <li id="ref-8">H. Wang, M. Sun, Q. Feng, P. Wang, T. Li and Y. Ding, <i>Towards Memory Safe Python Enclave for Security Sensitive Computation</i>, 2020</li>
+        <li id="ref-9">P. Silva, D. Vavřička, J. Barreto and M. Matos, <i>Impact of Geo-distribution and Mining Pools on Blockchains: A Study of Ethereum</i>, 2020</li>
+        <li id="ref-10">A. El-Korashy, S. Tsampas, M. Patrignani, D. Devriese, D. Garg and F. Piessens, <i>CapablePtrs: Securely Compiling Partial Programs using the Pointers-as-Capabilities Principle</i>, 2020</li>
+        <li id="ref-11">T. Sotiropoulos, S. Chaliasos, D. Mitropoulos and D. Spinellis, <i>Identifying Bugs in Make and JVM-Oriented Builds</i>, 2020</li>
+    </ol>
+</section>
+
+<section id="about-pre-print-saturdays">
+    <h2>About <i>Pre-Print Saturday</i></h2>
+        <section id="about-what">
+            <h3>What is this?</h3>
+            <p><i>Pre-Print Saturday</i> is a series of posts I publish every Saturday. They summarise the previous week's arXiv submissions that I find interesting.</p>
+        </section>
+        
+        <section id="about-why">
+            <h3>Why do this?</h3>
+            <ol>
+                <li>To keep me up-to-date with current literature</li>
+                <li>To provide an organised way of recording and documenting this literature</li>
+                <li>To provide a way for friends, collegues, and the public who may share my interests to remain up-to-date in a less labour-intensive way</li>
+            </ol>
+        </section>
+</section>
+
+
