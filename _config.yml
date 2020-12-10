@@ -53,3 +53,10 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+exclude:
+    - msg.tmp
+    - Makefile
+    - LICENSE
+    - VERSION
+    - README.md
+
