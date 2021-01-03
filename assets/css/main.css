@@ -9,6 +9,9 @@ header {
     color: #ffffff;
 }
 
+.navbar {
+    padding: 0.5rem 0;
+}
 .navbar .nav-item .nav-link {
     padding: 0.5rem 0;
 }
