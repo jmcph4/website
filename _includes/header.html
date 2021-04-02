@@ -12,7 +12,7 @@
     <body>
         <!-- Header -->
         <header>
-            <div id="masthead-container" class="container-fluid">
+            <div id="masthead-container" class="container">
                 <div class="row no-gutters">
                     <div class="col">
                         <!-- Masthead -->
@@ -21,33 +21,33 @@
                         </div>
                     </div>
                 </div>
-                <div class="row no-gutters">
-                    <div class="col">
-                        <!-- Main menu -->
-                        <nav class="navbar navbar-expand navbar-light bg-light">
-                            <div class="collapse navbar-collapse">
-                                <ul class="navbar-nav mr-auto">
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{site.url}}">Home</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="{{site.url}}/posts">Posts</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="https://github.com/{{ site.github }}" target="_blank">GitHub</a>
-                                    </li>
-                                    <li class="nav-item">
-                                        <a class="nav-link" href="https://www.linkedin.com/in/jack-mcpherson-410b2a134" target="_blank">LinkedIn</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </nav>
+            </div>
+            <!-- Main menu -->
+            <nav class="navbar navbar-expand navbar-light bg-light">
+                <div class="collapse navbar-collapse">
+                    <div class="container">
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{site.url}}">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{site.url}}/posts.html">Posts</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{site.url}}/work.html">Work</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://github.com/{{ site.github_username }}" target="_blank">GitHub</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://www.linkedin.com/in/jack-mcpherson-410b2a134" target="_blank">LinkedIn</a>
+                            </li>
+                        </ul>
                     </div>
                 </div>
-            </div>
-            <hr>
+            </nav>
         </header>
-        
+
         <!-- Main content -->
         <div id="main-container" class="container">
 

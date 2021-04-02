@@ -1,13 +1,22 @@
+header {
+    background-color: #d9230f;
+    margin-bottom: 1rem;
+}
+
 #masthead {
     padding-top: 60px;
     padding-bottom: 60px;
-    text-align: left;
-    background-color: #D9230F;
-    color: #FFFFFF;
+    color: #ffffff;
 }
 
-#masthead-container {
-    padding: 0px;
+.navbar {
+    padding: 0.5rem 0;
+}
+.navbar .nav-item .nav-link {
+    padding: 0.5rem 0;
+}
+.navbar .nav-item:not(:last-child) {
+    margin-right: 1rem;
 }
 
 body h1, h2, h3, h4, h5, h6, .nav-item {
@@ -34,10 +43,6 @@ a:hover {
     text-decoration: bold;
 }
 
-#main-container {
-    margin-left: 1rem;
-}
-
 /* For generating BibTex references */
 input#show {
     display:none;
@@ -51,3 +56,6 @@ input#show:checked ~ span.bibtex-content {
   display:block;
 }
 
+footer {
+    padding-bottom: 1rem;
+}
