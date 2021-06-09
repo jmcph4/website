@@ -43,6 +43,16 @@ a:hover {
     text-decoration: bold;
 }
 
+/**
+Use a better box model (opinionated).
+*/
+
+*,
+::before,
+::after {
+	box-sizing: border-box;
+}
+
 /* For generating BibTex references */
 input#show {
     display:none;
