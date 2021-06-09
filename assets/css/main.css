@@ -25,6 +25,7 @@ body h1, h2, h3, h4, h5, h6, .nav-item {
 
 body {
     font-family: 'Libre Baskerville', serif;
+    margin: 0;
 }
 
 a {
@@ -41,6 +42,16 @@ a:hover {
 
 .post-special-link:hover {
     text-decoration: bold;
+}
+
+/**
+Use a better box model (opinionated).
+*/
+
+*,
+::before,
+::after {
+	box-sizing: border-box;
 }
 
 /* For generating BibTex references */
