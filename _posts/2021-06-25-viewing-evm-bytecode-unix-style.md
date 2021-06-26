@@ -1,9 +1,9 @@
 ---
-date: 2021-06-26 12:00:00
+date: 2021-06-26 18:00:00
 title: "Viewing EVM Bytecode Unix Style"
 layout: post
 started: 2020-06-25 11:18:00
-tags: []
+tags: [unix, ethereum, tooling, evm, bytecode, smart contracts]
 ---
 
 Often in blockchain development (specifically smart contract work, in this case), tooling tends to converge on easy-to-use web-based interfaces. This makes a lot of sense and the current offerings are certainly vast and effective. However, if you're reading this, you likely already prefer a clean and minimalist interface for *all* of your computing -- not just development work.
